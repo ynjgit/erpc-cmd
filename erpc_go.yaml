@@ -1,0 +1,32 @@
+server:
+  app: app
+  server: helloworld
+  address:  127.0.0.1:5000
+  core: echo
+  interceptor:
+    - recovery
+    - debuglog
+  service:
+    - erpc.app.helloworld.Greeter
+
+client:
+  timeout: 1000
+  interceptor:
+    - debuglog
+  remote:
+    - name: erpc.app.helloworld.Greeter
+      target: http://127.0.0.1:5000
+      timeout: 1000
+  
+log:
+  writer:
+    - name: console
+      level: debug
+    - writer: file
+      level: debug
+      write_config:
+        log_path: ./logs
+        filename: app.helloworld.log
+        max_size: 10
+        max_age: 7
+        max_backups: 10
